@@ -30,6 +30,7 @@ function HybridConnectionsWebSocketServer(options, callback) {
   options = Object.assign({
     server: null,
     token: null,
+    agent: null,
     id: null,
     verifyClient: null,
     handleProtocols: null,
@@ -112,6 +113,9 @@ function connectControlChannel(server) {
 
   if (token) {
     opt = { headers: { 'ServiceBusAuthorization': token } };
+  }
+  if(server.options.agent !== null) {
+    opt.agent = server.options.agent;
   }
 
   server.controlChannel = new WebSocket(server.listenUri, null, opt);
@@ -222,7 +226,8 @@ function accept(server, message) {
     try {
       var client = new WebSocket(address, protocol, {
         headers: headers,
-        perMessageDeflate: false
+        perMessageDeflate: false,
+        agent: self.options.agent
       });
 
       client.on('error', function(event) {

@@ -39,18 +39,25 @@ WS.createRelayedServer = function createRelayedServer(options, fn) {
  *
  * @param {String} address The URL/address we need to connect to.
  * @param {String} token Optional relay access token for sending.
+ * @param {Object} agent Optional Proxy Agent
  * @param {Function} fn Open listener.
  * @returns {WS}
  * @api public
  */
-WS.relayedConnect = function relayedConnect(address, token, fn) {
+WS.relayedConnect = function relayedConnect(address, token, agent, fn) {
   var opt = null;
   if (token != null) {
     opt = { headers : { 'ServiceBusAuthorization' : token}};
-  };
+  }
+  if(agent != null && typeof agent === 'object') {
+    opt.agent = agent
+  }
   var client = new WS(address, null, opt);
 
   if (typeof fn === 'function') {
+    client.on('open', function() { fn(client) });
+  }
+  if (typeof agent === 'function') {
     client.on('open', function() { fn(client) });
   }
 

@@ -138,6 +138,8 @@ Constructor arguments:
 - **token** (required) - this argument *either* holds a previously issued token string *or* a callback
                          function that can be called to obtain such a token string. The callback option
                          is preferred as it allows token renewal.
+- **agent** (optional) - this argument is an optional parameter for an https-proxy-agent if you want to run the
+                         server behind a Proxy
 
 #### Events
 
@@ -196,6 +198,15 @@ the package exposes a simple helper function, which is also used in the samples:
 ``` 
 
 var server = createRelayedServer([options], [connectCallback] )
+- Options Arguments:
+- **server** (required) - the fully qualified URI for a Hybrid Connection name on which to listen, usually
+                          constructed with the WebSocket.createRelayListenUri() helper.
+- **token** (required) - this argument *either* holds a previously issued token string *or* a callback
+                         function that can be called to obtain such a token string. The callback option
+                         is preferred as it allows token renewal.
+- **agent** (optional) - this argument is an optional parameter for an https-proxy-agent if you want to run the
+                         server behind a Proxy
+... many more options I'wont exyplain anymore.....
 
 This method is simple syntactic sugar that calls the constructor to create a new 
 instance of the RelayedServer and then subscribes the provided callback 
